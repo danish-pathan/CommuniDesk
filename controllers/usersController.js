@@ -1,17 +1,16 @@
 const User = require("../models/User");
 const Note = require("../models/Note");
-const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
 
-const getAllUsers = asyncHandler(async (req, res) => {
+const getAllUsers = async (req, res) => {
   const users = await User.find().select("-password").lean();
   if (!users?.length) {
     return res.status(400).json({ message: "No users found" });
   }
   res.json(users);
-});
+};
 
-const createNewUser = asyncHandler(async (req, res) => {
+const createNewUser = async (req, res) => {
   const { username, password, roles } = req.body;
   if (!username || !password || !Array.isArray(roles) || !roles.length) {
     return res.status(400).json({ message: "All fields are required" });
@@ -23,7 +22,10 @@ const createNewUser = asyncHandler(async (req, res) => {
   }
 
   const hashedPwd = await bcrypt.hash(password, 10);
-  const userObject = { username, password: hashedPwd, roles };
+  const userObject =
+    !Array.isArray(roles) || !roles.length
+      ? { username, password: hashedPwd }
+      : { username, password: hashedPwd, roles };
 
   const user = await User.create(userObject);
   if (user) {
@@ -31,9 +33,9 @@ const createNewUser = asyncHandler(async (req, res) => {
   } else {
     res.status(400).json({ message: "Invalid user data received" });
   }
-});
+};
 
-const updateUser = asyncHandler(async (req, res) => {
+const updateUser = async (req, res) => {
   const { id, username, roles, active, password } = req.body;
   if (
     !id ||
@@ -67,9 +69,9 @@ const updateUser = asyncHandler(async (req, res) => {
 
   const updatedUser = await user.save();
   res.json({ message: `${updatedUser.username} updated` });
-});
+};
 
-const deleteUser = asyncHandler(async (req, res) => {
+const deleteUser = async (req, res) => {
   const { id } = req.body;
   if (!id) {
     return res.status(400).json({ message: "User ID Required" });
@@ -88,7 +90,7 @@ const deleteUser = asyncHandler(async (req, res) => {
   const result = await user.deleteOne();
   const reply = `Username ${result.username} with ID ${result._id} deleted`;
   res.json(reply);
-});
+};
 
 module.exports = {
   getAllUsers,
