@@ -1,16 +1,18 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap");
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Noto Sans", sans-serif;
 }
 
 /* || VARIABLES */
 
 :root {
   /* COLORS */
-  --BGCOLOR: #0f172a;
+  /* --BGCOLOR: #0f172a; */
+  --BGCOLOR: #242331;
   --BORDER-COLOR: #fff;
   --COLOR: #fff;
   --ERROR: firebrick;
@@ -22,6 +24,7 @@
   --STATUS-OPEN: firebrick;
   --TABLE-BGCOLOR: #fff;
   --TABLE-COLOR: #000;
+  --INPUT-INVALID: #f00;
 }
 
 /* || UTILITY CLASSES */
@@ -69,7 +72,6 @@ body {
   min-height: 100vh;
   background-color: var(--BGCOLOR);
   color: var(--COLOR);
-  background-image: url("./img/background.jpg");
   background-size: cover;
   background-position: top right;
   background-blend-mode: multiply;
@@ -93,8 +95,7 @@ a {
   text-decoration: none;
 }
 
-a,
-a:visited {
+a:any-link {
   color: var(--LINK-COLOR);
 }
 
@@ -151,6 +152,10 @@ a:focus-visible {
   align-items: center;
 }
 
+.dash-header__container--small {
+  max-width: 800px;
+}
+
 .dash-header__nav {
   display: flex;
   flex-flow: row nowrap;
@@ -182,6 +187,8 @@ a:focus-visible {
   width: auto;
   height: auto;
 }
+
+/* || TABLES - GENERAL */
 
 thead,
 tbody,
